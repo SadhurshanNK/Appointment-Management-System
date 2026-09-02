@@ -2,6 +2,7 @@ package com.sunrisedental.server.patient.resource;
 
 import com.sunrisedental.server.patient.Patient;
 import com.sunrisedental.server.patient.dao.PatientDAO;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -17,6 +18,22 @@ import jakarta.ws.rs.core.Response;
 public class PatientResource {
 
     private final PatientDAO patientDAO = new PatientDAO();
+
+    @POST
+    public Response addPatient(Patient patient) {
+
+        boolean success = patientDAO.addPatient(patient);
+
+        if (success) {
+            return Response.status(Response.Status.CREATED)
+                    .entity(patient)
+                    .build();
+        }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("Failed to register patient")
+                .build();
+    }
 
     @GET
     @Path("/{id}")
