@@ -24,21 +24,37 @@ public class AppointmentResource {
 
 
     @POST
-    public Response registerAppointment(Appointment appointment) {
+public Response registerAppointment(Appointment appointment) {
 
-        boolean success = appointmentDAO.registerAppointment(appointment);
+    try {
 
-        if (success) {
-            return Response.status(Response.Status.CREATED)
+        boolean registered = appointmentDAO.registerAppointment(appointment);
+
+        if (registered) {
+
+            return Response
+                    .status(Response.Status.CREATED)
                     .entity(appointment)
+                    .build();
+
+        } else {
+
+            return Response
+                    .status(Response.Status.CONFLICT)
+                    .entity("Appointment Number already exists.")
                     .build();
         }
 
-        return Response.status(Response.Status.BAD_REQUEST)
-                .entity("Failed to register appointment.")
+    } catch (Exception e) {
+
+        e.printStackTrace();
+
+        return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("Error registering appointment.")
                 .build();
     }
-    
+}
       @GET
 @Path("/today")
 public Response getTodayAppointments() {

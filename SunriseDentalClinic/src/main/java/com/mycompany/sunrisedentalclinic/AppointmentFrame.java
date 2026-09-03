@@ -4,6 +4,14 @@
  */
 package com.mycompany.sunrisedentalclinic;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.swing.JOptionPane;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
+
 /**
  *
  * @author Sadhu
@@ -28,23 +36,735 @@ public class AppointmentFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtAppointmentNumber = new javax.swing.JTextField();
+        txtPatientId = new javax.swing.JTextField();
+        txtDentistId = new javax.swing.JTextField();
+        txtTreatmentId = new javax.swing.JTextField();
+        txtAppointmentDate = new javax.swing.JTextField();
+        txtAppointmentTime = new javax.swing.JTextField();
+        cmbStatus = new javax.swing.JComboBox<>();
+        btnRegister = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnCheckAvailability = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setText("SUNRISE DENTAL CLINIC APPOINTMENT");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("Appointment Number:");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Patient ID:");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Dentist ID:");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel5.setText("Treatment ID:");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel6.setText("Appointment Date:");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel7.setText("Appointment Time: ");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel8.setText("Status: ");
+
+        txtAppointmentNumber.setToolTipText("");
+
+        txtAppointmentDate.setToolTipText("");
+
+        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Scheduled", "Completed", "Cancelled", "Rescheduled" }));
+        cmbStatus.addActionListener(this::cmbStatusActionPerformed);
+
+        btnRegister.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnRegister.setText("Register");
+        btnRegister.setToolTipText("");
+        btnRegister.addActionListener(this::btnRegisterActionPerformed);
+
+        btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnSearch.setText("Search");
+        btnSearch.setToolTipText("");
+        btnSearch.addActionListener(this::btnSearchActionPerformed);
+
+        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnUpdate.setText("Update");
+        btnUpdate.setToolTipText("");
+        btnUpdate.addActionListener(this::btnUpdateActionPerformed);
+
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
+
+        btnCheckAvailability.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnCheckAvailability.setText("Check Availability");
+        btnCheckAvailability.setToolTipText("");
+        btnCheckAvailability.addActionListener(this::btnCheckAvailabilityActionPerformed);
+
+        btnClear.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnClear.setText("Clear");
+        btnClear.setToolTipText("");
+        btnClear.addActionListener(this::btnClearActionPerformed);
+
+        btnBack.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnBack.setText("Back");
+        btnBack.setToolTipText("");
+        btnBack.addActionListener(this::btnBackActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(201, 201, 201)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addGap(75, 75, 75)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtDentistId)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAppointmentTime, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAppointmentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTreatmentId, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAppointmentNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPatientId, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(215, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(91, 91, 91)
+                .addComponent(btnClear)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBack)
+                .addGap(126, 126, 126))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(235, 235, 235))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(284, 284, 284)
+                        .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(342, 342, 342)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCheckAvailability)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addComponent(jLabel1)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtAppointmentNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtPatientId, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtDentistId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtTreatmentId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtAppointmentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtAppointmentTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(53, 53, 53)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCheckAvailability, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(65, 65, 65)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBack)
+                    .addComponent(btnClear))
+                .addGap(47, 47, 47))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+   if (!validateAppointmentInput()) {
+    return;
+}
+        try {
+    URL url = new URL(
+        "http://localhost:8080/SunriseDentalServer/resources/appointments"
+    );
+
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+    conn.setRequestMethod("POST");
+    conn.setRequestProperty("Content-Type", "application/json");
+    conn.setRequestProperty("Accept", "application/json");
+    conn.setDoOutput(true);
+
+    String json = "{"
+            + "\"appointmentNumber\":\"" + txtAppointmentNumber.getText() + "\","
+            + "\"patientId\":" + txtPatientId.getText() + ","
+            + "\"dentistId\":" + txtDentistId.getText() + ","
+            + "\"treatmentId\":" + txtTreatmentId.getText() + ","
+            + "\"appointmentDate\":\"" + txtAppointmentDate.getText() + "\","
+            + "\"appointmentTime\":\"" + txtAppointmentTime.getText() + "\","
+            + "\"status\":\"" + cmbStatus.getSelectedItem().toString() + "\""
+            + "}";
+
+    try (OutputStream os = conn.getOutputStream()) {
+        os.write(json.getBytes("UTF-8"));
+    }
+
+    int responseCode = conn.getResponseCode();
+
+    if (responseCode == HttpURLConnection.HTTP_OK
+        || responseCode == HttpURLConnection.HTTP_CREATED) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Appointment Registered Successfully!"
+    );
+
+} else if (responseCode == HttpURLConnection.HTTP_CONFLICT) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Appointment Number already exists.\n"
+        + "Please use a different Appointment Number.",
+        "Duplicate Appointment",
+        JOptionPane.WARNING_MESSAGE
+    );
+
+} else {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Registration Failed. Response Code: " + responseCode
+    );
+}
+
+    conn.disconnect();
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(
+        this,
+        "Error: " + e.getMessage()
+    );
+}     // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegisterActionPerformed
+
+    private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbStatusActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+ try {
+    String appointmentNumber = txtAppointmentNumber.getText().trim();
+
+if (appointmentNumber.isEmpty()) {
+    JOptionPane.showMessageDialog(
+        this,
+        "Please enter an Appointment Number."
+    );
+    txtAppointmentNumber.requestFocus();
+    return;
+}
+
+if (!appointmentNumber.matches("[A-Za-z0-9-]+")) {
+    JOptionPane.showMessageDialog(
+        this,
+        "Appointment Number can contain only letters, numbers and hyphens."
+    );
+    txtAppointmentNumber.requestFocus();
+    return;
+
+    }
+
+    URL url = new URL(
+        "http://localhost:8080/SunriseDentalServer/resources/appointments/"
+        + appointmentNumber
+    );
+
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+    conn.setRequestMethod("GET");
+    conn.setRequestProperty("Accept", "application/json");
+
+    int responseCode = conn.getResponseCode();
+
+    if (responseCode == HttpURLConnection.HTTP_OK) {
+
+        java.io.BufferedReader reader =
+                new java.io.BufferedReader(
+                        new java.io.InputStreamReader(
+                                conn.getInputStream()
+                        )
+                );
+
+        StringBuilder response = new StringBuilder();
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+        }
+
+        reader.close();
+
+        String json = response.toString();
+
+        org.json.JSONObject appointment =
+                new org.json.JSONObject(json);
+
+        txtAppointmentNumber.setText(
+                appointment.getString("appointmentNumber")
+        );
+
+        txtPatientId.setText(
+                String.valueOf(appointment.getInt("patientId"))
+        );
+
+        txtDentistId.setText(
+                String.valueOf(appointment.getInt("dentistId"))
+        );
+
+        txtTreatmentId.setText(
+                String.valueOf(appointment.getInt("treatmentId"))
+        );
+
+        txtAppointmentDate.setText(
+                appointment.getString("appointmentDate")
+        );
+
+        txtAppointmentTime.setText(
+                appointment.getString("appointmentTime")
+        );
+
+        cmbStatus.setSelectedItem(
+                appointment.getString("status")
+        );
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Appointment Found!"
+        );
+
+    } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Appointment Not Found."
+        );
+
+    } else {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Search Failed. Response Code: " + responseCode
+        );
+    }
+
+    conn.disconnect();
+
+} catch (Exception e) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Error: " + e.getMessage()
+    );
+}       // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+if (!validateAppointmentInput()) {
+    return;
+}
+        try {
+    String appointmentNumber = txtAppointmentNumber.getText().trim();
+
+    if (appointmentNumber.isEmpty()) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Please enter an Appointment Number."
+        );
+        return;
+    }
+
+    URL url = new URL(
+        "http://localhost:8080/SunriseDentalServer/resources/appointments/"
+        + appointmentNumber
+    );
+
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+    conn.setRequestMethod("PUT");
+    conn.setRequestProperty("Content-Type", "application/json");
+    conn.setRequestProperty("Accept", "application/json");
+    conn.setDoOutput(true);
+
+    String json = "{"
+            + "\"appointmentNumber\":\"" + txtAppointmentNumber.getText() + "\","
+            + "\"patientId\":" + txtPatientId.getText() + ","
+            + "\"dentistId\":" + txtDentistId.getText() + ","
+            + "\"treatmentId\":" + txtTreatmentId.getText() + ","
+            + "\"appointmentDate\":\"" + txtAppointmentDate.getText() + "\","
+            + "\"appointmentTime\":\"" + txtAppointmentTime.getText() + "\","
+            + "\"status\":\"" + cmbStatus.getSelectedItem().toString() + "\""
+            + "}";
+
+    try (OutputStream os = conn.getOutputStream()) {
+        os.write(json.getBytes("UTF-8"));
+    }
+
+    int responseCode = conn.getResponseCode();
+
+    if (responseCode == HttpURLConnection.HTTP_OK) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Appointment Updated Successfully!"
+        );
+
+    } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Appointment Not Found."
+        );
+
+    } else {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Update Failed. Response Code: " + responseCode
+        );
+    }
+
+    conn.disconnect();
+
+} catch (NumberFormatException e) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Patient ID, Dentist ID and Treatment ID must be numbers."
+    );
+
+} catch (Exception e) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Error: " + e.getMessage()
+    );
+}       // TODO add your handling code here:
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+   try {
+    String appointmentNumber = txtAppointmentNumber.getText().trim();
+
+    if (appointmentNumber.isEmpty()) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Please enter an Appointment Number."
+        );
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(
+        this,
+        "Are you sure you want to permanently delete this appointment?",
+        "Confirm Delete",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.WARNING_MESSAGE
+    );
+
+    if (confirm != JOptionPane.YES_OPTION) {
+        return;
+    }
+
+    URL url = new URL(
+        "http://localhost:8080/SunriseDentalServer/resources/appointments/"
+        + appointmentNumber
+    );
+
+    HttpURLConnection conn =
+            (HttpURLConnection) url.openConnection();
+
+    conn.setRequestMethod("DELETE");
+
+    int responseCode = conn.getResponseCode();
+
+    if (responseCode == HttpURLConnection.HTTP_OK) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Appointment Deleted Successfully!"
+        );
+
+        // Clear the form after deletion
+        txtAppointmentNumber.setText("");
+        txtPatientId.setText("");
+        txtDentistId.setText("");
+        txtTreatmentId.setText("");
+        txtAppointmentDate.setText("");
+        txtAppointmentTime.setText("");
+        cmbStatus.setSelectedItem("Scheduled");
+
+    } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Appointment Not Found."
+        );
+
+    } else {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Delete Failed. Response Code: " + responseCode
+        );
+    }
+
+    conn.disconnect();
+
+} catch (Exception e) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Error: " + e.getMessage()
+    );
+}     // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnCheckAvailabilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckAvailabilityActionPerformed
+ try {
+    String dentistId = txtDentistId.getText().trim();
+    String date = txtAppointmentDate.getText().trim();
+    String time = txtAppointmentTime.getText().trim();
+
+    if (dentistId.isEmpty() || date.isEmpty() || time.isEmpty()) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Please enter Dentist ID, Appointment Date and Appointment Time."
+        );
+        return;
+    }
+
+    URL url = new URL(
+        "http://localhost:8080/SunriseDentalServer/resources/appointments/availability"
+        + "?dentistId=" + dentistId
+        + "&date=" + date
+        + "&time=" + time
+    );
+
+    HttpURLConnection conn =
+            (HttpURLConnection) url.openConnection();
+
+    conn.setRequestMethod("GET");
+    conn.setRequestProperty("Accept", "application/json");
+
+    int responseCode = conn.getResponseCode();
+
+    if (responseCode == HttpURLConnection.HTTP_OK) {
+
+        java.io.BufferedReader reader =
+                new java.io.BufferedReader(
+                        new java.io.InputStreamReader(
+                                conn.getInputStream()
+                        )
+                );
+
+        StringBuilder response = new StringBuilder();
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+        }
+
+        reader.close();
+
+        String result = response.toString();
+
+if (result.toLowerCase().contains("available")
+        && !result.toLowerCase().contains("not available")) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Dentist is Available!"
+    );
+
+} else {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Dentist is NOT Available at this date and time."
+    );
+}
+
+    } else {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Availability Check Failed. Response Code: "
+            + responseCode
+        );
+    }
+
+    conn.disconnect();
+
+} catch (Exception e) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Error: " + e.getMessage()
+    );
+}       // TODO add your handling code here:
+    }//GEN-LAST:event_btnCheckAvailabilityActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        
+    txtAppointmentNumber.setText("");
+    txtPatientId.setText("");
+    txtDentistId.setText("");
+    txtTreatmentId.setText("");
+    txtAppointmentDate.setText("");
+    txtAppointmentTime.setText("");
+
+    cmbStatus.setSelectedItem("Scheduled");
+
+    txtAppointmentNumber.requestFocus();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        
+    DashboardFrame dashboard = new DashboardFrame();
+    dashboard.setVisible(true);
+
+    this.dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private boolean validateAppointmentInput() {
+
+    String appointmentNumber = txtAppointmentNumber.getText().trim();
+    String patientId = txtPatientId.getText().trim();
+    String dentistId = txtDentistId.getText().trim();
+    String treatmentId = txtTreatmentId.getText().trim();
+    String appointmentDate = txtAppointmentDate.getText().trim();
+    String appointmentTime = txtAppointmentTime.getText().trim();
+
+    // Appointment Number
+    if (appointmentNumber.isEmpty()) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Please enter an Appointment Number."
+        );
+        txtAppointmentNumber.requestFocus();
+        return false;
+    }
+
+    // Patient ID
+    if (!patientId.matches("\\d+") || Integer.parseInt(patientId) <= 0) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Patient ID must be a valid positive number."
+        );
+        txtPatientId.requestFocus();
+        return false;
+    }
+
+    // Dentist ID
+    if (!dentistId.matches("\\d+") || Integer.parseInt(dentistId) <= 0) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Dentist ID must be a valid positive number."
+        );
+        txtDentistId.requestFocus();
+        return false;
+    }
+
+    // Treatment ID
+    if (!treatmentId.matches("\\d+") || Integer.parseInt(treatmentId) <= 0) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Treatment ID must be a valid positive number."
+        );
+        txtTreatmentId.requestFocus();
+        return false;
+    }
+
+    // Appointment Date
+    try {
+        LocalDate.parse(appointmentDate);
+    } catch (DateTimeParseException e) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Appointment Date must be in YYYY-MM-DD format."
+        );
+        txtAppointmentDate.requestFocus();
+        return false;
+    }
+
+    // Appointment Time
+    try {
+        LocalTime.parse(appointmentTime);
+    } catch (DateTimeParseException e) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Appointment Time must be in HH:MM:SS format."
+        );
+        txtAppointmentTime.requestFocus();
+        return false;
+    }
+
+    return true;
+}
     /**
+     * 
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -70,5 +790,27 @@ public class AppointmentFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnCheckAvailability;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnRegister;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cmbStatus;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JTextField txtAppointmentDate;
+    private javax.swing.JTextField txtAppointmentNumber;
+    private javax.swing.JTextField txtAppointmentTime;
+    private javax.swing.JTextField txtDentistId;
+    private javax.swing.JTextField txtPatientId;
+    private javax.swing.JTextField txtTreatmentId;
     // End of variables declaration//GEN-END:variables
 }
