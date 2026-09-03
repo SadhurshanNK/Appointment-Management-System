@@ -9,6 +9,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import javax.swing.JOptionPane;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Sadhu
@@ -34,28 +40,25 @@ public class PatientFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        txtPatientId = new javax.swing.JTextField();
         txtPatientName = new javax.swing.JTextField();
         txtAddress = new javax.swing.JTextField();
         txtContact = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtPatientId = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("PATIENT MANAGEMENT");
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Patient ID");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Patient Name");
@@ -70,34 +73,43 @@ public class PatientFrame extends javax.swing.JFrame {
         jButton1.setText("Register");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton2.setText("Search");
-
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton3.setText("Update");
-
-        txtPatientId.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtPatientId.setText("Enter Patient ID");
-        txtPatientId.setToolTipText("");
-        txtPatientId.addActionListener(this::txtPatientIdActionPerformed);
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         txtPatientName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtPatientName.setText("Enter Patient Name");
+        txtPatientName.setToolTipText("");
+        txtPatientName.addActionListener(this::txtPatientNameActionPerformed);
 
         txtAddress.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtAddress.setText("Enter Address");
+        txtAddress.setToolTipText("");
 
         txtContact.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtContact.setText("Enter Contact");
+        txtContact.setToolTipText("");
+        txtContact.addActionListener(this::txtContactActionPerformed);
 
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton4.setText("Delete");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
 
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton5.setText("Clear");
+        jButton5.addActionListener(this::jButton5ActionPerformed);
 
         jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton6.setText("Back ");
+        jButton6.addActionListener(this::jButton6ActionPerformed);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("Patient ID");
+
+        txtPatientId.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPatientId.setToolTipText("");
+        txtPatientId.addActionListener(this::txtPatientIdActionPerformed);
+
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton2.setText("Search");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,15 +118,13 @@ public class PatientFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(247, 247, 247)
+                        .addGap(196, 196, 196)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5))
                         .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPatientId)
                             .addComponent(txtPatientName, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                             .addComponent(txtAddress)
                             .addComponent(txtContact)))
@@ -124,37 +134,36 @@ public class PatientFrame extends javax.swing.JFrame {
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(333, 333, 333)
-                        .addComponent(jLabel1)))
-                .addContainerGap(283, Short.MAX_VALUE))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(jLabel2)
+                        .addGap(95, 95, 95)
+                        .addComponent(txtPatientId, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(jButton2)))
+                .addContainerGap(256, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(jLabel1)
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(txtPatientId, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(86, 86, 86)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtPatientName, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel4))
-                    .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -162,92 +171,429 @@ public class PatientFrame extends javax.swing.JFrame {
                 .addGap(68, 68, 68)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
                     .addComponent(jButton3))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton4)
                     .addComponent(jButton5)
                     .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING))
-                .addGap(281, 281, 281))
+                .addGap(56, 56, 56)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPatientId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jButton2))
+                .addGap(215, 215, 215))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+String name = txtPatientName.getText().trim();
+String address = txtAddress.getText().trim();
+String contact = txtContact.getText().trim();
+
+// Validation
+if (name.isEmpty()|| address.isEmpty() || contact.isEmpty()) {
+
+    JOptionPane.showMessageDialog(this,
+            "Please fill in all patient details.",
+            "Validation Error",
+            JOptionPane.WARNING_MESSAGE);
+
+    return;
+}
+
+try {
+   
+
+    String json = "{"
+        + "\"name\":\"" + name + "\","
+        + "\"address\":\"" + address + "\","
+        + "\"contactNumber\":\"" + contact + "\""
+        + "}";
+    URL url = new URL(
+            "http://localhost:8080/SunriseDentalServer/resources/patients"
+    );
+
+    HttpURLConnection connection =
+            (HttpURLConnection) url.openConnection();
+
+    connection.setRequestMethod("POST");
+    connection.setRequestProperty("Content-Type", "application/json");
+    connection.setRequestProperty("Accept", "application/json");
+    connection.setDoOutput(true);
+
+    // Send JSON to REST API
+    try (OutputStream outputStream = connection.getOutputStream()) {
+        outputStream.write(json.getBytes("UTF-8"));
+    }
+
+    int responseCode = connection.getResponseCode();
+
+    if (responseCode == HttpURLConnection.HTTP_OK
+            || responseCode == HttpURLConnection.HTTP_CREATED) {
+
+        JOptionPane.showMessageDialog(this,
+                "Patient registered successfully!",
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // Clear fields
+        txtPatientName.setText("");
+        txtAddress.setText("");
+        txtContact.setText("");
+
+    } else {
+
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(connection.getErrorStream())
+        );
+
+        StringBuilder errorMessage = new StringBuilder();
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+            errorMessage.append(line);
+        }
+
+        JOptionPane.showMessageDialog(this,
+                "Failed to register patient.\nHTTP Status: "
+                + responseCode
+                + "\n"
+                + errorMessage,
+                "Registration Failed",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    connection.disconnect();
+
+} catch (NumberFormatException e) {
+
+    JOptionPane.showMessageDialog(this,
+            "Patient ID must be a number.",
+            "Validation Error",
+            JOptionPane.WARNING_MESSAGE);
+
+} catch (Exception e) {
+
+    JOptionPane.showMessageDialog(this,
+            "Connection error:\n" + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+}      // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void txtPatientIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPatientIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPatientIdActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         String name = txtPatientName.getText().trim();
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+         String patientIdText = txtPatientId.getText().trim();
+
+    // Validation
+    if (patientIdText.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Please enter Patient ID.",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        int patientId = Integer.parseInt(patientIdText);
+
+        URL url = new URL(
+                "http://localhost:8080/SunriseDentalServer/resources/patients/"
+                + patientId
+        );
+
+        HttpURLConnection connection =
+                (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Accept", "application/json");
+
+        int responseCode = connection.getResponseCode();
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream())
+            );
+
+            StringBuilder response = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+
+            reader.close();
+
+            String json = response.toString();
+
+            // Extract patient details
+            String name = json.split("\"name\":\"")[1].split("\"")[0];
+            String address = json.split("\"address\":\"")[1].split("\"")[0];
+            String contact = json.split("\"contactNumber\":\"")[1].split("\"")[0];
+
+            // Display patient details
+            txtPatientName.setText(name);
+            txtAddress.setText(address);
+            txtContact.setText(contact);
+
+            JOptionPane.showMessageDialog(this,
+                    "Patient found successfully!",
+                    "Search",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Patient not found.",
+                    "Search Result",
+                    JOptionPane.WARNING_MESSAGE);
+
+        } else {
+
+            JOptionPane.showMessageDialog(this,
+                    "Server error. Response code: " + responseCode,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        connection.disconnect();
+
+    } catch (NumberFormatException e) {
+
+        JOptionPane.showMessageDialog(this,
+                "Patient ID must be a number.",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(this,
+                "Connection error: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+
+    String patientIdText = txtPatientId.getText().trim();
+    String name = txtPatientName.getText().trim();
     String address = txtAddress.getText().trim();
     String contact = txtContact.getText().trim();
 
     // Validation
-    if (name.isEmpty() || address.isEmpty() || contact.isEmpty()) {
+    if (patientIdText.isEmpty() || name.isEmpty()
+            || address.isEmpty() || contact.isEmpty()) {
 
         JOptionPane.showMessageDialog(this,
                 "Please fill in all patient details.",
                 "Validation Error",
                 JOptionPane.WARNING_MESSAGE);
-
         return;
     }
 
     try {
+        int patientId = Integer.parseInt(patientIdText);
 
+        // Create JSON
         String json = "{"
+                + "\"patientId\":" + patientId + ","
                 + "\"name\":\"" + name + "\","
                 + "\"address\":\"" + address + "\","
                 + "\"contactNumber\":\"" + contact + "\""
                 + "}";
 
-        HttpClient client = HttpClient.newHttpClient();
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/SunriseDentalServer/resources/patients"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
-
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
+        // REST API URL
+        URL url = new URL(
+                "http://localhost:8080/SunriseDentalServer/resources/patients/"
+                + patientId
         );
 
-        if (response.statusCode() == 201) {
+        HttpURLConnection connection =
+                (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("PUT");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setDoOutput(true);
+
+        // Send JSON
+        try (java.io.OutputStream outputStream =
+                     connection.getOutputStream()) {
+
+            byte[] input = json.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            outputStream.write(input);
+        }
+
+        int responseCode = connection.getResponseCode();
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
 
             JOptionPane.showMessageDialog(this,
-                    "Patient registered successfully!",
-                    "Success",
+                    "Patient updated successfully!",
+                    "Update",
                     JOptionPane.INFORMATION_MESSAGE);
 
-            txtPatientId.setText("");
-            txtPatientName.setText("");
-            txtAddress.setText("");
-            txtContact.setText("");
+        } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Patient not found.",
+                    "Update",
+                    JOptionPane.WARNING_MESSAGE);
 
         } else {
 
             JOptionPane.showMessageDialog(this,
-                    "Failed to register patient.\nHTTP Status: "
-                    + response.statusCode()
-                    + "\n" + response.body(),
-                    "Registration Failed",
+                    "Update failed. Response code: " + responseCode,
+                    "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
+
+        connection.disconnect();
+
+    } catch (NumberFormatException e) {
+
+        JOptionPane.showMessageDialog(this,
+                "Patient ID must be a number.",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
 
     } catch (Exception e) {
 
         JOptionPane.showMessageDialog(this,
-                "Unable to connect to the server.\n"
-                + e.getMessage(),
-                "Connection Error",
+                "Connection error: " + e.getMessage(),
+                "Error",
                 JOptionPane.ERROR_MESSAGE);
-    }        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    String patientIdText = txtPatientId.getText().trim();
+
+if (patientIdText.isEmpty()) {
+    JOptionPane.showMessageDialog(
+        this,
+        "Please enter Patient ID.",
+        "Validation Error",
+        JOptionPane.WARNING_MESSAGE
+    );
+    return;
+}
+
+try {
+    int patientId = Integer.parseInt(patientIdText);
+
+    int confirm = JOptionPane.showConfirmDialog(
+        this,
+        "Are you sure you want to delete Patient ID " + patientId + "?",
+        "Confirm Delete",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm != JOptionPane.YES_OPTION) {
+        return;
+    }
+
+    URL url = new URL(
+        "http://localhost:8080/SunriseDentalServer/resources/patients/"
+        + patientId
+    );
+
+    HttpURLConnection connection =
+        (HttpURLConnection) url.openConnection();
+
+    connection.setRequestMethod("DELETE");
+    connection.setRequestProperty("Accept", "application/json");
+
+    int responseCode = connection.getResponseCode();
+
+    if (responseCode == HttpURLConnection.HTTP_OK) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Patient deleted successfully!",
+            "Delete",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+
+        // Clear fields
+        txtPatientId.setText("");
+        txtPatientName.setText("");
+        txtAddress.setText("");
+        txtContact.setText("");
+
+    } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Patient not found.",
+            "Delete Error",
+            JOptionPane.WARNING_MESSAGE
+        );
+
+    } else {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Failed to delete patient. HTTP Code: " + responseCode,
+            "Delete Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    connection.disconnect();
+
+} catch (NumberFormatException e) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Patient ID must be a number.",
+        "Validation Error",
+        JOptionPane.WARNING_MESSAGE
+    );
+
+} catch (Exception e) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Connection error: " + e.getMessage(),
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+    );
+}       // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+txtPatientId.setText("");
+txtPatientName.setText("");
+txtAddress.setText("");
+txtContact.setText("");
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void txtPatientNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPatientNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPatientNameActionPerformed
+
+    private void txtContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContactActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtContactActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        DashboardFrame dashboard = new DashboardFrame();
+    dashboard.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
