@@ -15,23 +15,24 @@ public class PatientDAO {
     public boolean registerPatient(Patient patient) {
 
         String sql = "INSERT INTO patient "
-                + "(patient_name, address, contact_number) "
-                + "VALUES (?, ?, ?)";
+            + "(patient_name, address, contact_number) "
+            + "VALUES (?, ?, ?)";
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+    try (Connection connection = DatabaseConnection.getConnection();
+         PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(2, patient.getName());
-            statement.setString(3, patient.getAddress());
-            statement.setString(4, patient.getContactNumber());
+        statement.setString(1, patient.getName());
+        statement.setString(2, patient.getAddress());
+        statement.setString(3, patient.getContactNumber());
 
-            return statement.executeUpdate() > 0;
+        return statement.executeUpdate() > 0;
 
-        } catch (Exception e) {
-    e.printStackTrace();
-    throw new RuntimeException(e);
-}
+    } catch (Exception e) {
+
+        e.printStackTrace();
+        throw new RuntimeException(e);
     }
+}
 
     // SEARCH PATIENT
     public Patient getPatient(int patientId) {
