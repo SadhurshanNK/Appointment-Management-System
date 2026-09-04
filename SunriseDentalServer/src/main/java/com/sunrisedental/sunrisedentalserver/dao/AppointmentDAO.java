@@ -15,31 +15,41 @@ public class AppointmentDAO {
 
     public boolean registerAppointment(Appointment appointment) {
 
-        String sql = "INSERT INTO appointment "
-                + "(appointment_number, patient_id, dentist_id, treatment_id, "
-                + "appointment_date, appointment_time, status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO appointment "
+            + "(appointment_number, patient_id, dentist_id, treatment_id, "
+            + "appointment_date, appointment_time, status) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+    try (Connection connection = DatabaseConnection.getConnection();
+         PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, appointment.getAppointmentNumber());
-            statement.setInt(2, appointment.getPatientId());
-            statement.setInt(3, appointment.getDentistId());
-            statement.setInt(4, appointment.getTreatmentId());
-            statement.setDate(5,
-                    java.sql.Date.valueOf(appointment.getAppointmentDate()));
-            statement.setTime(6,
-                    java.sql.Time.valueOf(appointment.getAppointmentTime()));
-            statement.setString(7, appointment.getStatus());
+        statement.setString(1, appointment.getAppointmentNumber());
+        statement.setInt(2, appointment.getPatientId());
+        statement.setInt(3, appointment.getDentistId());
+        statement.setInt(4, appointment.getTreatmentId());
+        statement.setDate(
+                5,
+                java.sql.Date.valueOf(appointment.getAppointmentDate())
+        );
+        statement.setTime(
+                6,
+                java.sql.Time.valueOf(appointment.getAppointmentTime())
+        );
+        statement.setString(7, appointment.getStatus());
 
-            return statement.executeUpdate() > 0;
+        return statement.executeUpdate() > 0;
 
-        } catch (Exception e) {
-            e.printStackTrace();
+    } catch (SQLException e) {
+
+        // Duplicate appointment number
+        if (e.getErrorCode() == 1062) {
             return false;
         }
+
+        e.printStackTrace();
+        throw new RuntimeException("Database error while registering appointment.", e);
     }
+}
 
 
     public Appointment getAppointment(String appointmentNumber) {
