@@ -52,55 +52,62 @@ public class AppointmentDAO {
 }
 
 
-    public Appointment getAppointment(String appointmentNumber) {
+   public Appointment getAppointment(String appointmentNumber) {
 
-        String sql = "SELECT * FROM appointment "
-                + "WHERE appointment_number = ?";
+    String sql = "SELECT a.*, t.treatment_fee "
+            + "FROM appointment a "
+            + "JOIN treatment t ON a.treatment_id = t.treatment_id "
+            + "WHERE a.appointment_number = ?";
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+    try (Connection connection = DatabaseConnection.getConnection();
+         PreparedStatement statement =
+                 connection.prepareStatement(sql)) {
 
-            statement.setString(1, appointmentNumber);
+        statement.setString(1, appointmentNumber);
 
-            ResultSet result = statement.executeQuery();
+        ResultSet result = statement.executeQuery();
 
-            if (result.next()) {
+        if (result.next()) {
 
-                Appointment appointment = new Appointment();
+            Appointment appointment = new Appointment();
 
-                appointment.setAppointmentId(
-                        result.getInt("appointment_id"));
+            appointment.setAppointmentId(
+                    result.getInt("appointment_id"));
 
-                appointment.setAppointmentNumber(
-                        result.getString("appointment_number"));
+            appointment.setAppointmentNumber(
+                    result.getString("appointment_number"));
 
-                appointment.setPatientId(
-                        result.getInt("patient_id"));
+            appointment.setPatientId(
+                    result.getInt("patient_id"));
 
-                appointment.setDentistId(
-                        result.getInt("dentist_id"));
+            appointment.setDentistId(
+                    result.getInt("dentist_id"));
 
-                appointment.setTreatmentId(
-                        result.getInt("treatment_id"));
+            appointment.setTreatmentId(
+                    result.getInt("treatment_id"));
 
-                appointment.setAppointmentDate(
-                        result.getDate("appointment_date").toString());
+            appointment.setTreatmentFee(
+                    result.getDouble("treatment_fee"));
 
-                appointment.setAppointmentTime(
-                        result.getTime("appointment_time").toString());
+            appointment.setAppointmentDate(
+                    result.getDate("appointment_date").toString());
 
-                appointment.setStatus(
-                        result.getString("status"));
+            appointment.setAppointmentTime(
+                    result.getTime("appointment_time").toString());
 
-                return appointment;
-            }
+            appointment.setStatus(
+                    result.getString("status"));
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            return appointment;
         }
 
-        return null;
+    } catch (Exception e) {
+
+        e.printStackTrace();
     }
+
+    return null;
+}
 
 
     public boolean updateAppointment(Appointment appointment) {

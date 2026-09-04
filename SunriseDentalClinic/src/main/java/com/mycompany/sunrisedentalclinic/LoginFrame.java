@@ -5,6 +5,12 @@
 package com.mycompany.sunrisedentalclinic;
 
 import javax.swing.JOptionPane;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 /**
  *
  * @author Sadhu
@@ -53,10 +59,8 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Password:");
 
-        jTextField1.setText("Enter Username");
         jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
-        jPasswordField1.setText("Enter Password");
         jPasswordField1.addActionListener(this::jPasswordField1ActionPerformed);
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -139,26 +143,135 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String username = jTextField1.getText();
+        String username = jTextField1.getText().trim();
     String password = new String(jPasswordField1.getPassword());
 
-    if (username.equals("admin") && password.equals("admin123")) {
+    if (username.isEmpty() || password.isEmpty()) {
 
-        JOptionPane.showMessageDialog(this,
-            "Login successful!");
+        JOptionPane.showMessageDialog(
+                this,
+                "Please enter username and password.",
+                "Login Failed",
+                JOptionPane.ERROR_MESSAGE
+        );
 
-    DashboardFrame dashboard = new DashboardFrame();
-    dashboard.setVisible(true);
+        return;
+    }
 
-    this.dispose();
+    try {
 
-} else {
+        // Create JSON request
+        org.json.JSONObject loginData =
+                new org.json.JSONObject();
 
-    JOptionPane.showMessageDialog(this,
-            "Invalid username or password",
-            "Login Failed",
-            JOptionPane.ERROR_MESSAGE);
-}
+        loginData.put("username", username);
+        loginData.put("passwordHash", password);
+
+        // REST API URL
+        URL url = new URL(
+                "http://localhost:8080/"
+                + "SunriseDentalServer/resources/login"
+        );
+
+        HttpURLConnection connection =
+                (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("POST");
+
+        connection.setRequestProperty(
+                "Content-Type",
+                "application/json"
+        );
+
+        connection.setRequestProperty(
+                "Accept",
+                "application/json"
+        );
+
+        connection.setDoOutput(true);
+
+        // Send login request
+        try (OutputStream outputStream =
+                connection.getOutputStream()) {
+
+            byte[] input =
+                    loginData.toString()
+                            .getBytes(StandardCharsets.UTF_8);
+
+            outputStream.write(input);
+        }
+
+        int responseCode =
+                connection.getResponseCode();
+
+        if (responseCode ==
+                HttpURLConnection.HTTP_OK) {
+
+            BufferedReader reader =
+                    new BufferedReader(
+                            new InputStreamReader(
+                                    connection.getInputStream()
+                            )
+                    );
+
+            StringBuilder response =
+                    new StringBuilder();
+
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+
+            reader.close();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Login successful!",
+                    "Login",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            DashboardFrame dashboard =
+                    new DashboardFrame();
+
+            dashboard.setVisible(true);
+
+            this.dispose();
+
+        } else if (responseCode ==
+                HttpURLConnection.HTTP_UNAUTHORIZED) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Invalid username or password.",
+                    "Login Failed",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Login failed.\nHTTP Status: "
+                    + responseCode,
+                    "Login Failed",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+
+        connection.disconnect();
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Error connecting to server: "
+                + e.getMessage(),
+                "Login Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

@@ -5,6 +5,7 @@ import com.sunrisedental.sunrisedentalserver.resources.AppointmentResource;
 import com.sunrisedental.sunrisedentalserver.resources.PatientResource;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
+import com.sunrisedental.sunrisedentalserver.resources.LoginResource;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +21,8 @@ public class JakartaRestConfiguration extends Application {
         resources.add(PatientResource.class);
         resources.add(AppointmentResource.class);
         resources.add(BillResource.class);
+        resources.add(LoginResource.class);
+        
 
         return resources;
     }

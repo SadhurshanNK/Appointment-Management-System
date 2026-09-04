@@ -7,9 +7,11 @@ public class Appointment {
     private int patientId;
     private int dentistId;
     private int treatmentId;
+    private double treatmentFee;
     private String appointmentDate;
     private String appointmentTime;
     private String status;
+    
 
     // Default constructor
     public Appointment() {
@@ -56,6 +58,13 @@ public class Appointment {
     public void setTreatmentId(int treatmentId) {
         this.treatmentId = treatmentId;
     }
+    public double getTreatmentFee() {
+    return treatmentFee;
+}
+
+public void setTreatmentFee(double treatmentFee) {
+    this.treatmentFee = treatmentFee;
+}
 
     public String getAppointmentDate() {
         return appointmentDate;

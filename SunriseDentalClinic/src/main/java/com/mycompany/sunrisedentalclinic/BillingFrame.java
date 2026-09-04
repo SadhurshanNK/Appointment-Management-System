@@ -20,6 +20,8 @@ public class BillingFrame extends javax.swing.JFrame {
     private int createdBillId = 0;
     
     
+    private static final double CONSULTATION_FEE = 1000.00;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BillingFrame.class.getName());
 
     /**
@@ -52,7 +54,6 @@ public class BillingFrame extends javax.swing.JFrame {
         txtTreatmentFee = new javax.swing.JTextField();
         txtTotalAmount = new javax.swing.JTextField();
         btnLoad = new javax.swing.JButton();
-        btnCalculate = new javax.swing.JButton();
         btnCreateBill = new javax.swing.JButton();
         btnPrintBill = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
@@ -97,8 +98,10 @@ public class BillingFrame extends javax.swing.JFrame {
         txtTreatment.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtTreatment.setToolTipText("");
 
+        txtConsultationFee.setEditable(false);
         txtConsultationFee.setToolTipText("");
 
+        txtTreatmentFee.setEditable(false);
         txtTreatmentFee.setToolTipText("");
 
         txtTotalAmount.setEditable(false);
@@ -109,11 +112,6 @@ public class BillingFrame extends javax.swing.JFrame {
         btnLoad.setText("Load");
         btnLoad.setToolTipText("");
         btnLoad.addActionListener(this::btnLoadActionPerformed);
-
-        btnCalculate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnCalculate.setText("Calculate");
-        btnCalculate.setToolTipText("");
-        btnCalculate.addActionListener(this::btnCalculateActionPerformed);
 
         btnCreateBill.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnCreateBill.setText("Create Bill");
@@ -151,13 +149,6 @@ public class BillingFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(226, 226, 226))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnCalculate, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCreateBill, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPrintBill, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(294, 294, 294))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
@@ -177,6 +168,12 @@ public class BillingFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(256, 256, 256))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(375, 375, 375)
+                .addComponent(btnCreateBill, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnPrintBill, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,12 +205,11 @@ public class BillingFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59)
+                .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCalculate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCreateBill, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPrintBill, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -223,60 +219,8 @@ public class BillingFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCalculateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculateActionPerformed
-        try {
-
-        String consultationText =
-                txtConsultationFee.getText().trim();
-
-        String treatmentText =
-                txtTreatmentFee.getText().trim();
-
-        if (consultationText.isEmpty()
-                || treatmentText.isEmpty()) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Please enter Consultation Fee and Treatment Fee."
-            );
-
-            return;
-        }
-
-        double consultationFee =
-                Double.parseDouble(consultationText);
-
-        double treatmentFee =
-                Double.parseDouble(treatmentText);
-
-        if (consultationFee < 0 || treatmentFee < 0) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Fees cannot be negative."
-            );
-
-            return;
-        }
-
-        double totalAmount =
-                consultationFee + treatmentFee;
-
-        txtTotalAmount.setText(
-                String.format("%.2f", totalAmount)
-        );
-
-    } catch (NumberFormatException e) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Please enter valid numeric values for the fees."
-        );
-    }
-    }//GEN-LAST:event_btnCalculateActionPerformed
-
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
-        try {
+         try {
 
         String appointmentNumber =
                 txtAppointmentNumber.getText().trim();
@@ -344,20 +288,50 @@ public class BillingFrame extends javax.swing.JFrame {
                     new org.json.JSONObject(
                             response.toString()
                     );
-            loadedAppointmentId =
-        appointment.getInt("appointmentId");
 
+            // Get appointment information
+            loadedAppointmentId =
+                    appointment.getInt("appointmentId");
+
+            int patientId =
+                    appointment.getInt("patientId");
+
+            int treatmentId =
+                    appointment.getInt("treatmentId");
+
+            // Get treatment fee from database
+            double treatmentFee =
+                    appointment.getDouble("treatmentFee");
+
+            // Display patient and treatment
             txtPatient.setText(
-                    String.valueOf(
-                            appointment.getInt("patientId")
-                    )
+                    String.valueOf(patientId)
             );
 
             txtTreatment.setText(
-                    String.valueOf(
-                            appointment.getInt("treatmentId")
-                    )
+                    String.valueOf(treatmentId)
             );
+
+            // Automatically set consultation fee
+            txtConsultationFee.setText(
+                    String.format("%.2f", CONSULTATION_FEE)
+            );
+
+            // Automatically set treatment fee
+            txtTreatmentFee.setText(
+                    String.format("%.2f", treatmentFee)
+            );
+
+            // Automatically calculate total
+            double totalAmount =
+                    CONSULTATION_FEE + treatmentFee;
+
+            txtTotalAmount.setText(
+                    String.format("%.2f", totalAmount)
+            );
+
+            // Reset previous bill ID
+            createdBillId = 0;
 
             JOptionPane.showMessageDialog(
                     this,
@@ -371,6 +345,14 @@ public class BillingFrame extends javax.swing.JFrame {
                     this,
                     "Appointment not found."
             );
+
+            txtPatient.setText("");
+            txtTreatment.setText("");
+            txtConsultationFee.setText("");
+            txtTreatmentFee.setText("");
+            txtTotalAmount.setText("");
+
+            loadedAppointmentId = 0;
 
         } else {
 
@@ -391,6 +373,7 @@ public class BillingFrame extends javax.swing.JFrame {
                 "Error: " + e.getMessage()
         );
     }
+ 
 
     }//GEN-LAST:event_btnLoadActionPerformed
 
@@ -538,6 +521,52 @@ public class BillingFrame extends javax.swing.JFrame {
             }
 
             reader.close();
+            
+            // Check whether a bill already exists
+URL checkUrl = new URL(
+        "http://localhost:8080/"
+        + "SunriseDentalServer/resources/bills/appointment/"
+        + loadedAppointmentId
+);
+
+HttpURLConnection checkConn =
+        (HttpURLConnection) checkUrl.openConnection();
+
+checkConn.setRequestMethod("GET");
+checkConn.setRequestProperty(
+        "Accept",
+        "application/json"
+);
+
+int checkResponseCode =
+        checkConn.getResponseCode();
+
+if (checkResponseCode == HttpURLConnection.HTTP_OK) {
+
+    JOptionPane.showMessageDialog(
+            this,
+            "A bill already exists for this appointment."
+    );
+
+    checkConn.disconnect();
+    return;
+
+}
+
+if (checkResponseCode != HttpURLConnection.HTTP_NOT_FOUND) {
+
+    JOptionPane.showMessageDialog(
+            this,
+            "Unable to verify existing bill.\n"
+            + "HTTP Status: "
+            + checkResponseCode
+    );
+
+    checkConn.disconnect();
+    return;
+}
+
+checkConn.disconnect();
 
             org.json.JSONObject createdBill =
                     new org.json.JSONObject(
@@ -727,7 +756,6 @@ public class BillingFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnCalculate;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnCreateBill;
     private javax.swing.JButton btnLoad;

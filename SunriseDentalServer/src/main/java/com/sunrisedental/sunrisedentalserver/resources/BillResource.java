@@ -89,4 +89,25 @@ public class BillResource {
                     .build();
         }
     }
+        // GET ALL BILLS
+    @GET
+    @Path("/all")
+    public Response getAllBills() {
+
+        try {
+
+            return Response
+                    .ok(billDAO.getAllBills())
+                    .build();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error retrieving all bills.")
+                    .build();
+        }
+    }
 }
